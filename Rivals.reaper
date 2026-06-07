@@ -1,0 +1,23 @@
+local statusMessages = {
+    {1, 20, "Initializing..."},
+    {21, 40, "Loading resources..."},
+    {41, 60, "Preparing interface..."},
+    {61, 80, "Starting services..."},
+    {81, 100, "Finalizing..."}
+}
+
+for percent = 1, 100 do
+    local currentStatus = "Loading..."
+
+    for _, info in ipairs(statusMessages) do
+        if percent >= info[1] and percent <= info[2] then
+            currentStatus = info[3]
+            break
+        end
+    end
+
+    print(string.format("[%d%%] %s", percent, currentStatus))
+    task.wait(0.05) -- remove or replace if task.wait isn't available
+end
+
+print("Load complete!")
