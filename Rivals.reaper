@@ -1,78 +1,59 @@
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
+local gui = script.Parent
 
--- GUI
-local gui = Instance.new("ScreenGui")
-gui.Name = "LoadingScreen"
-gui.ResetOnSpawn = false
-gui.Parent = playerGui
+local menuButton = gui:WaitForChild("MenuButton")
+local menuFrame = gui:WaitForChild("MenuFrame")
+local closeButton = menuFrame:WaitForChild("CloseButton")
 
-local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 400, 0, 160)
-frame.Position = UDim2.new(0.5, -200, 0.5, -80)
-frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-frame.Parent = gui
+-- SETTINGS
+menuFrame.Visible = false
 
-local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1, 0, 0, 40)
-title.BackgroundTransparency = 1
-title.Text = "ReaperzScriptz"
-title.TextColor3 = Color3.new(1, 1, 1)
-title.TextScaled = true
-title.Parent = frame
+-- STYLE MENU BUTTON
+menuButton.Size = UDim2.new(0, 120, 0, 50)
+menuButton.Position = UDim2.new(0, 10, 0.85, 0)
+menuButton.Text = "Menu"
+menuButton.TextScaled = true
+menuButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+menuButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
-local percent = Instance.new("TextLabel")
-percent.Size = UDim2.new(1, 0, 0, 30)
-percent.Position = UDim2.new(0, 0, 0, 40)
-percent.BackgroundTransparency = 1
-percent.Text = "0%"
-percent.TextColor3 = Color3.new(1, 1, 1)
-percent.TextScaled = true
-percent.Parent = frame
+-- STYLE MENU FRAME
+menuFrame.Size = UDim2.new(0.6, 0, 0.6, 0)
+menuFrame.Position = UDim2.new(0.2, 0, 0.2, 0)
+menuFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 
-local status = Instance.new("TextLabel")
-status.Size = UDim2.new(1, 0, 0, 30)
-status.Position = UDim2.new(0, 0, 0, 70)
-status.BackgroundTransparency = 1
-status.Text = "Initializing..."
-status.TextColor3 = Color3.new(1, 1, 1)
-status.TextScaled = true
-status.Parent = frame
+-- OPTIONAL: start off-screen (for animation)
+menuFrame.Position = UDim2.new(0.2, 0, 1, 0)
 
--- Bar background
-local barBg = Instance.new("Frame")
-barBg.Size = UDim2.new(0.8, 0, 0, 18)
-barBg.Position = UDim2.new(0.1, 0, 0, 115)
-barBg.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-barBg.Parent = frame
+-- STYLE CLOSE BUTTON
+closeButton.Size = UDim2.new(0, 100, 0, 40)
+closeButton.Position = UDim2.new(1, -110, 0, 10)
+closeButton.Text = "X"
+closeButton.TextScaled = true
+closeButton.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 
--- Bar fill
-local bar = Instance.new("Frame")
-bar.Size = UDim2.new(0, 0, 1, 0)
-bar.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
-bar.Parent = barBg
+-- OPEN MENU
+menuButton.MouseButton1Click:Connect(function()
+	menuFrame.Visible = true
 
--- 30 second loading (100 steps)
-for i = 1, 100 do
-    if i <= 25 then
-        status.Text = "Initializing..."
-    elseif i <= 50 then
-        status.Text = "Loading assets..."
-    elseif i <= 75 then
-        status.Text = "Preparing interface..."
-    else
-        status.Text = "Finalizing..."
-    end
+	menuFrame:TweenPosition(
+		UDim2.new(0.2, 0, 0.2, 0),
+		Enum.EasingDirection.Out,
+		Enum.EasingStyle.Quad,
+		0.3,
+		true
+	)
+end)
 
-    percent.Text = i .. "%"
-    bar.Size = UDim2.new(i / 100, 0, 1, 0)
-
-    task.wait(0.3) -- ~30 seconds total
-end
-
-percent.Text = "100%"
-status.Text = "Loaded!"
-
-task.wait(1)
-gui:Destroy()
+-- CLOSE MENU
+closeButton.MouseButton1Click:Connect(function()
+	menuFrame:TweenPosition(
+		UDim2.new(0.2, 0, 1, 0),
+		Enum.EasingDirection.In,
+		Enum.EasingStyle.Quad,
+		0.3,
+		true,
+		function()
+			menuFrame.Visible = false
+		end
+	)
+end)
