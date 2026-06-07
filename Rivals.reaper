@@ -1,4 +1,8 @@
-local gui = script.Parent
+StarterGui
+ └── ScreenGui
+      ├── MenuButton (TextButton)
+      ├── MenuFrame (Frame)
+      └── LocalScriptlocal gui = script.Parent
 
 local menuButton = gui:WaitForChild("MenuButton")
 local menuFrame = gui:WaitForChild("MenuFrame")
